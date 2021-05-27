@@ -49,13 +49,13 @@ def mine_block():
     previous_proof = previous_block['proof']
     proof = blockchain.proof_of_work(previous_proof)
     previous_hash = blockchain.hash(previous_block)
-    unconfirmed_transactions = blockchain.gen_transactions()
+    unconfirmed_coordinates = blockchain.gen_coordinates()
     block = blockchain.create_block(
-        proof, previous_hash, unconfirmed_transactions)
+        proof, previous_hash, unconfirmed_coordinates)
 
     response = {'message': 'A block is MINED',
                 'index': block['index'],
-                'transactions': block['transactions'],
+                'coordinates': block['coordinates'],
                 'timestamp': block['timestamp'],
                 'proof': block['proof'],
                 'previous_hash': block['previous_hash']

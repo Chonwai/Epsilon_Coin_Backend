@@ -10,7 +10,7 @@ class Blockchain:
     # This function is created
     # to create the very first
     # block and set it's hash to "0"
-    def gen_transactions(self):
+    def gen_coordinates(self):
         cordinates = [(random.uniform(-90, 90), random.uniform(-180, 180))
                       for _ in range(1000)]
         print("HeHe")
@@ -21,25 +21,25 @@ class Blockchain:
         return cordinates, Ridx
 
     def __init__(self):
-        self.unconfirmed_transactions = []
+        self.unconfirmed_coordinates = []
         self.chain = []
         self.create_block(proof=1, previous_hash='0',
-                          unconfirmed_transactions=self.gen_transactions())
+                          unconfirmed_coordinates=self.gen_coordinates())
         self.utils = utils.Utils
 
     # def add_new_transaction(self):
     #     coords = [(random.uniform(-90, 90), random.uniform(-180, 180)) for _ in range(10)]
-    #     self.unconfirmed_transactions.extend(coords)
+    #     self.unconfirmed_coordinates.extend(coords)
 
     # This function is created
     # to add further blocks
     # into the chain
 
-    def create_block(self, proof, previous_hash, unconfirmed_transactions):
+    def create_block(self, proof, previous_hash, unconfirmed_coordinates):
         block = {'index': len(self.chain) + 1,
                  'timestamp': str(datetime.datetime.now()),
-                 'transactions': unconfirmed_transactions[0],
-                 'rtree_index': unconfirmed_transactions[1],
+                 'coordinates': unconfirmed_coordinates[0],
+                 'rtree_index': unconfirmed_coordinates[1],
                  'proof': proof,
                  'previous_hash': previous_hash}
         self.chain.append(block)
