@@ -18,7 +18,7 @@ def init_app(app, blockchain):
     def display_ridx():
         k = request.args.get('nearest', default = '6', type = int)
         rtree = blockchain.chain[0]['rtree_index']
-        targetID = blockchain.chain[0]['coordinates'][random.randint(0, 999)]
+        targetID = blockchain.chain[0]['coordinates'][random.randint(0, 49999)]
         nearestID = list(rtree.nearest((targetID[0], targetID[1], targetID[0], targetID[1]), k))
         nearestCoordinates = []
         nearestCoordinates = [blockchain.chain[0]['coordinates'][i] for i in nearestID[1:k]]

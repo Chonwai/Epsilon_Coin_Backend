@@ -4,6 +4,7 @@ import rtree
 import datetime
 import json
 from utils import utils as utils
+import hashlib
 
 
 class Blockchain:
@@ -12,7 +13,7 @@ class Blockchain:
     # block and set it's hash to "0"
     def gen_coordinates(self):
         cordinates = [(random.uniform(-90, 90), random.uniform(-180, 180))
-                      for _ in range(1000)]
+                      for _ in range(50000)]
         print("HeHe")
         print(str(len(cordinates)))
         Ridx = rtree.index.Index()
@@ -70,7 +71,7 @@ class Blockchain:
 
     def hash(self, block):
         encoded_block = json.dumps(
-            removekey(block, 'rtree_index'), sort_keys=True).encode()
+            self.utils.removekey(block, 'rtree_index'), sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
 
     def chain_valid(self, chain):
