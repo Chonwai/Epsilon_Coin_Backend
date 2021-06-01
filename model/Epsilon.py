@@ -20,7 +20,6 @@ class Epsilon:
         self.path = []
 
     def getPath(self):
-        print(self.path)
         return self.path
 
     def walk(self):
@@ -31,3 +30,16 @@ class Epsilon:
             self.path.append(copy.deepcopy(self.perviousLocation))
         self.perviousLocation = self.path[-1]
         return self.path
+    
+    def detectedPathWithTags(self, rtree, network, k = 10):
+        predictPath = []
+        for location in self.path:
+            item = {}
+            nearestID = rtree.findTopKNearest(location, 10)
+            nearestTags = Utils.queryNetworkLocationsByIDs(network, nearestID)
+            detectedPoint = Utils.calculateCenterPoint(nearestTags)
+            item['detected_point'] = detectedPoint
+            item['nearest_tags'] = nearestTags
+            predictPath.append(item)
+            pass
+        return predictPath

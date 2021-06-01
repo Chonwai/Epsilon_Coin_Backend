@@ -28,12 +28,14 @@ app.debug = True
 
 # Create the object
 # of the class blockchain
+Utils = Utils.Utils
 TagNetwork = TagNetwork.TagNetwork()
 RTree = RTree.RTree()
 EpsilonA = Epsilon.Epsilon()
-Blockchain = Blackchain.Blockchain(TagNetwork.getNetwork(), RTree)
+Utils.insertNetworkToRTree(TagNetwork.getNetwork(), RTree)
 
-api.init_app(app, Blockchain, TagNetwork, RTree, [EpsilonA])
+Blockchain = Blackchain.Blockchain(TagNetwork.getNetwork(), RTree, EpsilonA)
+api.init_app(app, Blockchain, TagNetwork, RTree, EpsilonA)
 CORS(app)
 
 

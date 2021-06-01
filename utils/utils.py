@@ -15,11 +15,10 @@ class Utils:
         for x, y in locations:
             centerX = centerX + x
             centerY = centerY + y
-            print(x, y)
             pass
         centerX = centerX / len(locations)
         centerY = centerY / len(locations)
-        print("The Center Point is: ", centerX, centerY)
+        return [centerX, centerY]
 
     @staticmethod
     def randomWalk(location, dist):
@@ -49,3 +48,16 @@ class Utils:
             location[0] -= dist
             location[1] += dist
         return location
+
+    @staticmethod
+    def insertNetworkToRTree(network, rtree):
+        for ind, pt in enumerate(network):
+            rtree.insertPoint(ind, pt)
+
+    @staticmethod
+    def queryNetworkLocationsByIDs(network = [], id = []):
+        locations = []
+        for key in id:
+            locations.append(network[key])
+            pass
+        return locations

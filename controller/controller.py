@@ -8,38 +8,42 @@ Utils = Utils.Utils
 class Controller:
     @staticmethod
     def displayChain(blockchain):
-        response = {'chain': [Utils.removeKey(i, 'rtree_index') for i in blockchain.chain],
+        response = {'chain': [Utils.removeKey(i, 'tag_network') for i in blockchain.chain],
                     'length': len(blockchain.chain)}
         return response
 
     @staticmethod
-    def displayRidx(blockchain, rtree):
+    def displaySpecifyChain(blockchain, id):
+        block = list(filter(lambda x: x['index'] == id, blockchain.chain))
+        response = {'chain': [Utils.removeKey(block[0], 'tag_network')],
+                    'length': 1}
+        return response
+
+    @staticmethod
+    def displayRidx(blockchain, RTree):
         k = request.args.get('nearest', default='6', type=int)
         nearestCoordinates = []
-        # targetID = blockchain.chain[0]['coordinates'][random.randint(0, 4999)]
         target = [random.uniform(-90, 90), random.uniform(-180, 180)]
-        print("The Initial Point is: ", target)
-        nearestID = list(rtree.findTopKNearest(target, k))
+        nearestID = list(RTree.findTopKNearest(target, k))
         nearestCoordinates = [blockchain.chain[0]
-                              ['coordinates'][i] for i in nearestID[1:k]]
+                              ['tag_network'][i] for i in nearestID[1:k]]
         Utils.calculateCenterPoint(nearestCoordinates)
         response = {'traget': target, 'nearest': nearestCoordinates}
         return response
 
     @staticmethod
-    def mineBlock(blockchain, tagNetwork, rtree):
+    def mineBlock(blockchain, tagNetwork, RTree, EpsilonA):
         previous_block = blockchain.printPreviousBlock()
         previous_proof = previous_block['proof']
         proof = blockchain.proofOfWork(previous_proof)
         previous_hash = blockchain.hash(previous_block)
         unconfirmed_coordinates = blockchain.generateCoordinates(
-            tagNetwork.getNetwork(), rtree)
+            tagNetwork.getNetwork())
         block = blockchain.createBlock(
-            proof, previous_hash, unconfirmed_coordinates)
+            proof, previous_hash, unconfirmed_coordinates, RTree, EpsilonA)
 
         response = {'message': 'A block is MINED',
                     'index': block['index'],
-                    'coordinates': block['coordinates'],
                     'timestamp': block['timestamp'],
                     'proof': block['proof'],
                     'previous_hash': block['previous_hash']
@@ -54,4 +58,9 @@ class Controller:
             response = {'message': 'The Blockchain is valid.'}
         else:
             response = {'message': 'The Blockchain is not valid.'}
+        return response
+
+    @staticmethod
+    def displayTags(tagNetwork):
+        response = {'tag_network': tagNetwork.getNetwork()}
         return response

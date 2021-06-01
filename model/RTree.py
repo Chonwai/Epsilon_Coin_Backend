@@ -9,6 +9,6 @@ class RTree:
         self.rtree.insert(index, (point[0], point[1], point[0], point[1]))
 
     def findTopKNearest(self, target, k = 10):
-        topKNearest = self.rtree.nearest(
-            (target[0], target[1], target[0], target[1]), k)
+        topKNearest = list(self.rtree.nearest(
+            (target[0], target[1], target[0], target[1]), k))
         return topKNearest

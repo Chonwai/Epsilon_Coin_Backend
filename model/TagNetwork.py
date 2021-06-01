@@ -3,7 +3,7 @@ import random
 
 class TagNetwork:
     def generateTags(self):
-        for i in range(5000):
+        for i in range(50000):
             cordinate = (random.uniform(-90, 90), random.uniform(-180, 180))
             self.tags.append(cordinate)
 

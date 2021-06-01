@@ -10,25 +10,26 @@ from model import TagNetwork as TagNetwork
 tagNetwork = TagNetwork.TagNetwork()
 Utils = Utils.Utils
 
+
 class Blockchain:
     # This function is created
     # to create the very first
     # block and set it's hash to "0"
-    def generateCoordinates(self, tagNetwork, rtree):
-        # cordinates = [(random.uniform(-90, 90), random.uniform(-180, 180))
-        #               for _ in range(5000)]
+    def generateCoordinates(self, tagNetwork):
         cordinates = tagNetwork
-        for ind, pt in enumerate(cordinates):
-            rtree.insertPoint(ind, pt)
         return cordinates
 
     # This function is created
     # to add further blocks
     # into the chain
-    def createBlock(self, proof, previous_hash, unconfirmed_coordinates):
+    def createBlock(self, proof, previous_hash, unconfirmed_coordinates, RTree, EpsilonA):
+        EpsilonA.walk()
+        detectedPath = EpsilonA.detectedPathWithTags(RTree, unconfirmed_coordinates, 10)
         block = {'index': len(self.chain) + 1,
                  'timestamp': str(datetime.datetime.now()),
-                 'coordinates': unconfirmed_coordinates,
+                 'tag_network': unconfirmed_coordinates,
+                 'original_path': EpsilonA.path,
+                 'detected_path': detectedPath,
                  'proof': proof,
                  'previous_hash': previous_hash}
         self.chain.append(block)
@@ -83,7 +84,7 @@ class Blockchain:
 
         return True
 
-    def __init__(self, tagNetwork, rtree):
+    def __init__(self, tagNetwork, RTree, EpsilonA):
         self.chain = []
-        self.createBlock(proof=1, previous_hash='0',
-                          unconfirmed_coordinates=self.generateCoordinates(tagNetwork, rtree))
+        self.createBlock(proof=1, previous_hash='0', unconfirmed_coordinates=self.generateCoordinates(
+            tagNetwork), RTree=RTree, EpsilonA=EpsilonA)
