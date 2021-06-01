@@ -4,8 +4,8 @@ import random
 class TagNetwork:
     def generateTags(self):
         for i in range(50000):
-            cordinate = (random.uniform(-90, 90), random.uniform(-180, 180))
-            self.tags.append(cordinate)
+            coordinate = (random.uniform(-100, 100), random.uniform(-100, 100))
+            self.tags.append(coordinate)
 
     def getNetworkLength(self):
         return len(self.tags)

@@ -7,8 +7,8 @@ Utils = Utils.Utils
 class Epsilon:
     def __init__(self, path=[]):
         self.path = path
-        self.dist = 1
-        self.perviousLocation = [random.uniform(-90, 90), random.uniform(-180, 180)]
+        self.dist = 3
+        self.perviousLocation = [random.uniform(-100, 100), random.uniform(-100, 100)]
 
     def updatePath(self, path):
         self.path = path

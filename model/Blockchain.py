@@ -13,13 +13,6 @@ Utils = Utils.Utils
 
 class Blockchain:
     # This function is created
-    # to create the very first
-    # block and set it's hash to "0"
-    def generateCoordinates(self, tagNetwork):
-        cordinates = tagNetwork
-        return cordinates
-
-    # This function is created
     # to add further blocks
     # into the chain
     def createBlock(self, proof, previous_hash, unconfirmed_coordinates, RTree, EpsilonA):
@@ -86,5 +79,4 @@ class Blockchain:
 
     def __init__(self, tagNetwork, RTree, EpsilonA):
         self.chain = []
-        self.createBlock(proof=1, previous_hash='0', unconfirmed_coordinates=self.generateCoordinates(
-            tagNetwork), RTree=RTree, EpsilonA=EpsilonA)
+        self.createBlock(proof=1, previous_hash='0', unconfirmed_coordinates=tagNetwork, RTree=RTree, EpsilonA=EpsilonA)

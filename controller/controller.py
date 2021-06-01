@@ -23,7 +23,7 @@ class Controller:
     def displayRidx(blockchain, RTree):
         k = request.args.get('nearest', default='6', type=int)
         nearestCoordinates = []
-        target = [random.uniform(-90, 90), random.uniform(-180, 180)]
+        target = [random.uniform(-100, 100), random.uniform(-100, 100)]
         nearestID = list(RTree.findTopKNearest(target, k))
         nearestCoordinates = [blockchain.chain[0]
                               ['tag_network'][i] for i in nearestID[1:k]]
@@ -37,8 +37,7 @@ class Controller:
         previous_proof = previous_block['proof']
         proof = blockchain.proofOfWork(previous_proof)
         previous_hash = blockchain.hash(previous_block)
-        unconfirmed_coordinates = blockchain.generateCoordinates(
-            tagNetwork.getNetwork())
+        unconfirmed_coordinates = tagNetwork.getNetwork()
         block = blockchain.createBlock(
             proof, previous_hash, unconfirmed_coordinates, RTree, EpsilonA)
 

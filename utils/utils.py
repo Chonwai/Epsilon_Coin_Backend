@@ -47,6 +47,16 @@ class Utils:
         elif direction == 7:
             location[0] -= dist
             location[1] += dist
+
+        if (location[0] < -100):
+            location[0] = -100
+        if (location[0] > 100):
+            location[0] = 100
+        if (location[1] < -100):
+            location[1] = -100
+        if (location[1] > 100):
+            location[1] = 100
+        
         return location
 
     @staticmethod
