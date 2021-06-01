@@ -8,22 +8,19 @@ import hashlib
 from model import TagNetwork as TagNetwork
 
 tagNetwork = TagNetwork.TagNetwork()
-
+Utils = Utils.Utils
 
 class Blockchain:
     # This function is created
     # to create the very first
     # block and set it's hash to "0"
-    def generateCoordinates(self, tagNetwork):
+    def generateCoordinates(self, tagNetwork, rtree):
         # cordinates = [(random.uniform(-90, 90), random.uniform(-180, 180))
         #               for _ in range(5000)]
         cordinates = tagNetwork
-        print("HeHe")
-        print(str(len(cordinates)))
-        Ridx = rtree.index.Index()
         for ind, pt in enumerate(cordinates):
-            Ridx.insert(ind, (pt[0], pt[1], pt[0], pt[1]))
-        return cordinates, Ridx
+            rtree.insertPoint(ind, pt)
+        return cordinates
 
     # This function is created
     # to add further blocks
@@ -31,8 +28,7 @@ class Blockchain:
     def createBlock(self, proof, previous_hash, unconfirmed_coordinates):
         block = {'index': len(self.chain) + 1,
                  'timestamp': str(datetime.datetime.now()),
-                 'coordinates': unconfirmed_coordinates[0],
-                 'rtree_index': unconfirmed_coordinates[1],
+                 'coordinates': unconfirmed_coordinates,
                  'proof': proof,
                  'previous_hash': previous_hash}
         self.chain.append(block)
@@ -63,7 +59,7 @@ class Blockchain:
 
     def hash(self, block):
         encoded_block = json.dumps(
-            self.utils.removekey(block, 'rtree_index'), sort_keys=True).encode()
+            Utils.removeKey(block, 'rtree_index'), sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
 
     def chainValid(self, chain):
@@ -87,10 +83,7 @@ class Blockchain:
 
         return True
 
-    def __init__(self, tagNetwork):
-        self.unconfirmed_coordinates = []
+    def __init__(self, tagNetwork, rtree):
         self.chain = []
         self.createBlock(proof=1, previous_hash='0',
-                          unconfirmed_coordinates=self.generateCoordinates(tagNetwork))
-        self.utils = Utils.Utils
-        self.tagNetwork = tagNetwork
+                          unconfirmed_coordinates=self.generateCoordinates(tagNetwork, rtree))

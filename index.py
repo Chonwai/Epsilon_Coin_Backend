@@ -3,27 +3,20 @@
 # For timestamp
 import datetime
 
-# Calculating the hash
-# in order to add digital
-# fingerprints to the blocks
-import hashlib
-
 # To store data
 # in our blockchain
-import json
 
 # Flask is for creating the web
 # app and jsonify is for
 # displaying the blockchain
 from flask import Flask, jsonify
 
-from rtree import index
-import rtree
-
 from flask_cors import CORS
 
 from model import Blockchain as Blackchain
 from model import TagNetwork as TagNetwork
+from model import RTree as RTree
+from model import Epsilon as Epsilon
 from utils import utils as Utils
 import router.api as api
 
@@ -36,9 +29,11 @@ app.debug = True
 # Create the object
 # of the class blockchain
 TagNetwork = TagNetwork.TagNetwork()
-Blockchain = Blackchain.Blockchain(TagNetwork.getNetwork())
+RTree = RTree.RTree()
+EpsilonA = Epsilon.Epsilon()
+Blockchain = Blackchain.Blockchain(TagNetwork.getNetwork(), RTree)
 
-api.init_app(app, Blockchain)
+api.init_app(app, Blockchain, TagNetwork, RTree, [EpsilonA])
 CORS(app)
 
 
