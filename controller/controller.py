@@ -20,6 +20,11 @@ class Controller:
         return response
 
     @staticmethod
+    def displayChainSize(blockchain):
+        response = {'size': len(blockchain.chain)}
+        return response
+
+    @staticmethod
     def displayRidx(blockchain, RTree):
         k = request.args.get('nearest', default='6', type=int)
         nearestCoordinates = []
